@@ -1,4 +1,3 @@
-import React, { useState } from 'react';
 import React, { useState, useEffect } from 'react';
 import { Plus, Edit, Trash2, ExternalLink } from 'lucide-react';
 import { Tour } from '../../types';
