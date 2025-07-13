@@ -8,7 +8,6 @@ import startOfWeek from 'date-fns/startOfWeek';
 import getDay from 'date-fns/getDay';
 import es from 'date-fns/locale/es'; // Importar el locale en español
 import 'react-big-calendar/lib/css/react-big-calendar.css'; // Estilos del calendario
-import { getCalendarEvents, setCalendarEvents } from '../../utils/storage';
 import { getCalendarEvents, addCalendarEvent, updateCalendarEvent, deleteCalendarEvent } from '../../utils/storage';
 import { CalendarEvent } from '../../types';
 
