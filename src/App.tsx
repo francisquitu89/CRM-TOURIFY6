@@ -12,11 +12,13 @@ import { TasksSection } from './components/tasks/TasksSection';
 import { MotivationSection } from './components/motivation/MotivationSection';
 import { ToursSection } from './components/tours/ToursSection';
 import { CalendarSection } from './components/calendar/CalendarSection';
+import { MotivationalPopup, useMotivationalPopups } from './components/motivation/MotivationalPopup';
 
 function App() {
   const [user, setUser] = useState<User | null>(null);
   const [activeSection, setActiveSection] = useState('dashboard');
   const [sidebarOpen, setSidebarOpen] = useState(false);
+  const { popup, showPopup, closePopup } = useMotivationalPopups();
 
   useEffect(() => {
     const currentUser = getCurrentUser();
@@ -32,6 +34,12 @@ function App() {
   const handleLogout = () => {
     setUser(null);
     setActiveSection('dashboard');
+  };
+
+  // Mostrar popup de bienvenida al hacer login
+  const handleLogin = (loggedInUser: User) => {
+    setUser(loggedInUser);
+    showPopup(`¡Bienvenido de vuelta, ${loggedInUser.name}! 🎉 ¡Listo para conquistar nuevas metas!`, 'success');
   };
 
   const renderActiveSection = () => {
@@ -84,6 +92,13 @@ function App() {
             {renderActiveSection()}
           </div>
         </main>
+        
+        <MotivationalPopup
+          isOpen={popup.isOpen}
+          onClose={closePopup}
+          message={popup.message}
+          type={popup.type}
+        />
       </div>
     </div>
   );

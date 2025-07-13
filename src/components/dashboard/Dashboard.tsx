@@ -5,6 +5,7 @@ import { TasksWidget } from './widgets/TasksWidget';
 import { ProspectsWidget } from './widgets/ProspectsWidget';
 import { FinancesWidget } from './widgets/FinancesWidget';
 import { MotivationalWidget } from './widgets/MotivationalWidget';
+import { useMotivationalPopups } from '../motivation/MotivationalPopup';
 
 interface DashboardProps {
   user: User;
@@ -12,6 +13,27 @@ interface DashboardProps {
 }
 
 export const Dashboard: React.FC<DashboardProps> = ({ user, onQuickAction }) => {
+  const { showPopup } = useMotivationalPopups();
+
+  // Mostrar popup cuando se hace una acción rápida
+  const handleQuickAction = (section: string) => {
+    if (onQuickAction) {
+      onQuickAction(section);
+      
+      const messages = {
+        prospects: "¡Excelente! Cada nuevo prospecto es una oportunidad de éxito 🎯",
+        finances: "¡Genial! Registrar ventas nos acerca a la meta 💰",
+        tasks: "¡Perfecto! La organización es clave del éxito 📋",
+        scripts: "¡Muy bien! Los scripts perfectos generan más ventas 📝"
+      };
+      
+      const message = messages[section as keyof typeof messages];
+      if (message) {
+        showPopup(message, 'motivation');
+      }
+    }
+  };
+
   return (
     <div className="space-y-6">
       <div className="flex items-center justify-between">
@@ -48,28 +70,28 @@ export const Dashboard: React.FC<DashboardProps> = ({ user, onQuickAction }) => 
           <div className="grid grid-cols-2 gap-3">
             <button
               className="p-4 bg-indigo-50 rounded-lg hover:bg-indigo-100 transition-colors text-left"
-              onClick={() => onQuickAction && onQuickAction('prospects')}
+              onClick={() => handleQuickAction('prospects')}
             >
               <div className="text-sm font-medium text-indigo-900">Nuevo Prospecto</div>
               <div className="text-xs text-indigo-600">Agregar cliente potencial</div>
             </button>
             <button
               className="p-4 bg-green-50 rounded-lg hover:bg-green-100 transition-colors text-left"
-              onClick={() => onQuickAction && onQuickAction('finances')}
+              onClick={() => handleQuickAction('finances')}
             >
               <div className="text-sm font-medium text-green-900">Registrar Venta</div>
               <div className="text-xs text-green-600">Añadir ingreso</div>
             </button>
             <button
               className="p-4 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors text-left"
-              onClick={() => onQuickAction && onQuickAction('tasks')}
+              onClick={() => handleQuickAction('tasks')}
             >
               <div className="text-sm font-medium text-purple-900">Nueva Tarea</div>
               <div className="text-xs text-purple-600">Crear recordatorio</div>
             </button>
             <button
               className="p-4 bg-orange-50 rounded-lg hover:bg-orange-100 transition-colors text-left"
-              onClick={() => onQuickAction && onQuickAction('scripts')}
+              onClick={() => handleQuickAction('scripts')}
             >
               <div className="text-sm font-medium text-orange-900">Ver Scripts</div>
               <div className="text-xs text-orange-600">Biblioteca de ventas</div>
